@@ -1,0 +1,43 @@
+# Generate Poindexter.xcodeproj with `xcodegen` (scripts/*.sh do this for you).
+name: Poindexter
+options:
+  bundleIdPrefix: io.github.pubino
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+packages:
+  PoindexterCore:
+    path: .
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    exactVersion: 2.10.0
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.0.0"
+    CURRENT_PROJECT_VERSION: "0"
+targets:
+  Poindexter:
+    type: application
+    platform: macOS
+    sources: [App]
+    dependencies:
+      - package: PoindexterCore
+        product: PoindexterCore
+      - package: Sparkle
+        product: Sparkle
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.pubino.poindexter
+        PRODUCT_NAME: Poindexter
+        INFOPLIST_FILE: App/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_ENTITLEMENTS: App/Poindexter.entitlements
+        ENABLE_HARDENED_RUNTIME: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        COMBINE_HIDPI_IMAGES: YES
+        # Overridden by scripts/release.sh from .env; defaults keep local builds working.
+        SPARKLE_FEED_URL: https://github.com/pubino/poindexter/releases/latest/download/appcast.xml
+        SPARKLE_PUBLIC_KEY: ""
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGN_IDENTITY: "-"

@@ -1,0 +1,9 @@
+included: [App, Sources, Tests]
+excluded: [.build, build]
+line_length: 130
+identifier_name:
+  min_length: 1
+disabled_rules:
+  - todo
+  - trailing_comma        # trailing commas keep diffs of multi-line literals small
+  - inclusive_language    # "slideMaster"/"notesMaster" are PresentationML part names
