@@ -107,6 +107,20 @@ struct JobRow: View {
 }
 
 struct SettingsView: View {
+    @ObservedObject var updates: UpdateSettingsModel
+
+    var body: some View {
+        TabView {
+            ConversionSettingsView()
+                .tabItem { Label("General", systemImage: "gearshape") }
+            UpdateSettingsView(model: updates)
+                .tabItem { Label("Updates", systemImage: "arrow.triangle.2.circlepath") }
+        }
+        .frame(width: 460)
+    }
+}
+
+struct ConversionSettingsView: View {
     @AppStorage(Preferences.collapseOverlays) private var collapseOverlays = false
     @AppStorage(Preferences.jpeg) private var jpeg = false
     @AppStorage(Preferences.notes) private var notes = true
@@ -127,7 +141,46 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 460)
+        .padding()
+    }
+}
+
+struct UpdateSettingsView: View {
+    @ObservedObject var model: UpdateSettingsModel
+
+    var body: some View {
+        Form {
+            Section {
+                Toggle("Automatically check for updates", isOn: $model.checksAutomatically)
+                Picker("Check", selection: $model.interval) {
+                    ForEach(UpdateCheckInterval.allCases) { Text($0.title).tag($0) }
+                }
+                .disabled(!model.checksAutomatically)
+                Toggle("Automatically download and install updates", isOn: $model.downloadsAutomatically)
+                    .disabled(!model.canChangeAutomaticDownloads)
+            } footer: {
+                if !model.canChangeAutomaticDownloads {
+                    Text("Turn on automatic checks to download updates automatically.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            Section {
+                LabeledContent("Last checked") {
+                    if let date = model.lastCheck {
+                        Text(date, format: .relative(presentation: .named))
+                    } else {
+                        Text("Never")
+                    }
+                }
+                HStack {
+                    Spacer()
+                    Button("Check Now", action: model.checkNow)
+                        .disabled(!model.canCheckNow)
+                }
+            }
+        }
+        .formStyle(.grouped)
         .padding()
     }
 }

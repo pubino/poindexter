@@ -1,12 +1,21 @@
 import AppKit
+import Combine
+import PoindexterCore
 import Sparkle
 import SwiftUI
 
 @main
 struct PoindexterApp: App {
     @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
-    private let updater = SPUStandardUpdaterController(
-        startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
+    private let updaterDelegate = UpdaterDelegate()
+    private let updater: SPUStandardUpdaterController
+    private let updates: UpdateSettingsModel
+
+    init() {
+        updater = SPUStandardUpdaterController(
+            startingUpdater: true, updaterDelegate: updaterDelegate, userDriverDelegate: nil)
+        updates = UpdateSettingsModel(updater: updater.updater, changes: updater.updater.settingsChanges)
+    }
 
     var body: some Scene {
         Window("Poindexter", id: "main") {
@@ -15,13 +24,13 @@ struct PoindexterApp: App {
         .defaultSize(width: 560, height: 460)
         .commands {
             CommandGroup(after: .appInfo) {
-                CheckForUpdatesView(updater: updater.updater)
+                CheckForUpdatesView(model: updates)
             }
             CommandGroup(replacing: .newItem) {}
         }
 
         Settings {
-            SettingsView()
+            SettingsView(updates: updates)
         }
     }
 }
@@ -39,25 +48,32 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 }
 
 struct CheckForUpdatesView: View {
-    @ObservedObject private var model: UpdaterModel
-    private let updater: SPUUpdater
-
-    init(updater: SPUUpdater) {
-        self.updater = updater
-        model = UpdaterModel(updater: updater)
-    }
+    @ObservedObject var model: UpdateSettingsModel
 
     var body: some View {
-        Button("Check for Updates…", action: updater.checkForUpdates)
-            .disabled(!model.canCheckForUpdates)
+        Button("Check for Updates…", action: model.checkNow)
+            .disabled(!model.canCheckNow)
     }
 }
 
-@MainActor
-final class UpdaterModel: ObservableObject {
-    @Published var canCheckForUpdates = false
+/// Asks about automatic update checks on the first launch instead of Sparkle's default second
+/// launch. Sparkle stops asking once the user answers, or changes the setting in Settings.
+final class UpdaterDelegate: NSObject, SPUUpdaterDelegate {
+    func updaterShouldPromptForPermissionToCheck(forUpdates updater: SPUUpdater) -> Bool { true }
+}
 
-    init(updater: SPUUpdater) {
-        updater.publisher(for: \.canCheckForUpdates).assign(to: &$canCheckForUpdates)
+extension SPUUpdater: @retroactive UpdaterControlling {
+    /// Fires when any setting or state shown in Settings changes, including from Sparkle itself.
+    var settingsChanges: AnyPublisher<Void, Never> {
+        Publishers.MergeMany(
+            publisher(for: \.automaticallyChecksForUpdates).map { _ in () }.eraseToAnyPublisher(),
+            publisher(for: \.automaticallyDownloadsUpdates).map { _ in () }.eraseToAnyPublisher(),
+            publisher(for: \.allowsAutomaticUpdates).map { _ in () }.eraseToAnyPublisher(),
+            publisher(for: \.updateCheckInterval).map { _ in () }.eraseToAnyPublisher(),
+            publisher(for: \.lastUpdateCheckDate).map { _ in () }.eraseToAnyPublisher(),
+            publisher(for: \.canCheckForUpdates).map { _ in () }.eraseToAnyPublisher()
+        )
+        .receive(on: DispatchQueue.main)
+        .eraseToAnyPublisher()
     }
 }

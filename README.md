@@ -25,7 +25,8 @@ There are two front ends with the same behaviour:
 Download the latest `Poindexter-x.y.z.dmg` from
 [Releases](https://github.com/pubino/poindexter/releases/latest) and drag it to Applications.
 It is signed with a Developer ID and notarized by Apple, so it opens without warnings.
-Sparkle keeps it up to date.
+Sparkle keeps it up to date: on first launch it asks whether to check for updates
+automatically, and **Settings → Updates** changes that later.
 
 Drop PDFs on the window or the Dock icon, or use **Choose PDFs…**. Each `talk.pdf` produces
 `talk.pptx` beside it. If that name is taken, the output is `talk 2.pptx`; existing files are
@@ -33,7 +34,9 @@ never overwritten. **Settings** (⌘,) has these options:
 - one slide per beamer frame, which skips overlay build-up steps,
 - PNG or JPEG images,
 - resolution,
-- whether to copy page text into the speaker notes.
+- whether to copy page text into the speaker notes,
+- under **Updates**: automatic checks and how often, automatic download and install, and
+  **Check Now**.
 
 Requires macOS 14 or later.
 
