@@ -6,6 +6,7 @@
 .ruff_cache
 work
 macos
+!macos/scripts/release.sh
 *.pdf
 *.pptx
 .env*

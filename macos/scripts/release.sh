@@ -50,13 +50,17 @@ cat > "$out/appcast.xml" <<XML
 </rss>
 XML
 
+# Unversioned copy so releases/latest/download/Poindexter.dmg (the GitHub Pages download
+# button) always resolves to the newest release.
+cp "$out/Poindexter-$version.dmg" "$out/Poindexter.dmg"
+
 if $dry_run; then
   print "Dry run: would tag $tag and upload:"
-  ls -l "$out"/Poindexter-$version.{zip,dmg} "$out/appcast.xml"
+  ls -l "$out"/Poindexter-$version.{zip,dmg} "$out/Poindexter.dmg" "$out/appcast.xml"
   exit 0
 fi
 git tag -a "$tag" -m "Poindexter $version"
 git push origin "$tag"
 gh release create "$tag" -R "$GITHUB_REPO" --title "Poindexter $version" --generate-notes \
-  "$out/Poindexter-$version.dmg" "$zip" "$out/appcast.xml"
+  "$out/Poindexter-$version.dmg" "$out/Poindexter.dmg" "$zip" "$out/appcast.xml"
 print "Published: https://github.com/$GITHUB_REPO/releases/tag/$tag"

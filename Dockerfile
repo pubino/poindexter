@@ -21,4 +21,6 @@ ENTRYPOINT ["pdf2pptx"]
 FROM base AS test
 RUN uv sync --frozen
 COPY tests ./tests
+COPY docs ./docs
+COPY macos/scripts/release.sh ./macos/scripts/release.sh
 CMD ["sh", "-c", "ruff format --check . && ruff check . && mypy && pytest -q"]
