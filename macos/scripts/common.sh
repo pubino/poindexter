@@ -49,8 +49,8 @@ generate_project() {
   (cd "$MACOS_DIR" && xcodegen generate --quiet)
 }
 
-# Writes a one-item Sparkle appcast. The notes are embedded as plain text, so Sparkle shows
-# them as text instead of loading a release page in a web view.
+# Writes a one-item Sparkle appcast. The notes are embedded as Markdown, which Sparkle renders
+# as formatted text instead of loading a release page in a web view.
 # Usage: write_appcast OUT VERSION BUILD ZIP_URL "SIGNATURE_ATTRS" NOTES_FILE
 write_appcast() {
   local out=$1 version=$2 build=$3 url=$4 sig=$5 notes=$6 text
@@ -64,7 +64,7 @@ write_appcast() {
     <link>https://github.com/${GITHUB_REPO:?}</link>
     <item>
       <title>Version $version</title>
-      <description sparkle:descriptionFormat="plain-text"><![CDATA[$text]]></description>
+      <description sparkle:format="markdown"><![CDATA[$text]]></description>
       <pubDate>$(LC_ALL=C date -u "+%a, %d %b %Y %H:%M:%S +0000")</pubDate>
       <sparkle:version>$build</sparkle:version>
       <sparkle:shortVersionString>$version</sparkle:shortVersionString>

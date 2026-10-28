@@ -112,8 +112,9 @@ Releases are built, signed and notarized locally. One-time setup:
    `generate_keys -x`: if it's lost, existing installs can't verify future updates.
 4. `cp example.env .env` and fill it in.
 
-Then write the user-facing notes in `macos/release-notes/VERSION.txt`. Sparkle shows them as
-plain text in the update window, and they become the GitHub release notes. From a clean,
+Then write the user-facing notes in Markdown in `macos/release-notes/VERSION.md`: a
+`## What's new` heading and one bullet per change, without hard line wraps. Sparkle renders them
+as formatted text in the update window, and they become the GitHub release notes. From a clean,
 pushed `main`:
 
 ```zsh

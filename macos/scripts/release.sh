@@ -9,8 +9,8 @@ version="${1:?usage: release.sh VERSION [--dry-run]}"
 dry_run=false
 [[ "${2:-}" == "--dry-run" ]] && dry_run=true
 build=$(build_number "$version")
-# User-facing notes, shown as plain text in Sparkle's update window and on the GitHub release.
-notes="$MACOS_DIR/release-notes/$version.txt"
+# User-facing Markdown notes, shown in Sparkle's update window and on the GitHub release.
+notes="$MACOS_DIR/release-notes/$version.md"
 [[ -s "$notes" ]] || die "write the release notes first: $notes"
 tag="v$version"
 out="$BUILD_DIR/release"
