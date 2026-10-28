@@ -93,19 +93,20 @@ Releases are built, signed and notarized locally. One-time setup:
 
 1. **Certificate.** You need a *Developer ID Application* certificate in your login keychain.
    Check with `security find-identity -v -p codesigning`.
-2. **Notarization credentials.** Store them in the keychain under a profile name:
+2. **Notarization credentials.** Store them once in the keychain under a profile that all your
+   locally signed apps can share (`NOTARY_PROFILE`):
    ```zsh
    # Option A: App Store Connect API key (Users and Access → Integrations → Team Keys,
    # role "Developer"). Works well alongside Xcode Cloud.
-   xcrun notarytool store-credentials poindexter-notary \
+   xcrun notarytool store-credentials developer-id-notary \
      --key ~/path/AuthKey_XXXXXXXXXX.p8 --key-id XXXXXXXXXX --issuer <issuer-uuid>
    # Option B: Apple ID with an app-specific password from account.apple.com
-   xcrun notarytool store-credentials poindexter-notary \
+   xcrun notarytool store-credentials developer-id-notary \
      --apple-id you@example.com --team-id W7EJE9LZ23
    ```
 3. **Sparkle signing key.** Run `macos/scripts/sparkle-keys.sh`. It prints the public key;
    put that in `.env`. The private key stays in your keychain. Back it up with
-   `generate_keys --account poindexter -x`: if it's lost, existing installs can't verify future updates.
+   `generate_keys -x`: if it's lost, existing installs can't verify future updates.
 4. `cp example.env .env` and fill it in.
 
 Then, from a clean, pushed `main`:

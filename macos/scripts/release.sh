@@ -28,7 +28,7 @@ fi
 
 zip="$out/Poindexter-$version.zip"
 sig=$("$BUILD_DIR/SourcePackages/artifacts/sparkle/Sparkle/bin/sign_update" \
-  --account "${SPARKLE_KEY_ACCOUNT:-poindexter}" "$zip")
+  --account "${SPARKLE_KEY_ACCOUNT:-ed25519}" "$zip")
 [[ "$sig" == *edSignature=* ]] || die "sign_update failed (is the Sparkle private key in your keychain?)"
 url="https://github.com/$GITHUB_REPO/releases/download/$tag/Poindexter-$version.zip"
 cat > "$out/appcast.xml" <<XML
