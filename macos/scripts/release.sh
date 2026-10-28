@@ -35,23 +35,6 @@ sig=$("$BUILD_DIR/SourcePackages/artifacts/sparkle/Sparkle/bin/sign_update" \
 [[ "$sig" == *edSignature=* ]] || die "sign_update failed (is the Sparkle private key in your keychain?)"
 url="https://github.com/$GITHUB_REPO/releases/download/$tag/Poindexter-$version.zip"
 write_appcast "$out/appcast.xml" "$version" "$build" "$url" "$sig" "$notes"
-<?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
-  <channel>
-    <title>Poindexter</title>
-    <link>https://github.com/$GITHUB_REPO</link>
-    <item>
-      <title>Version $version</title>
-      <sparkle:releaseNotesLink>https://github.com/$GITHUB_REPO/releases/tag/$tag</sparkle:releaseNotesLink>
-      <pubDate>$(LC_ALL=C date -u "+%a, %d %b %Y %H:%M:%S +0000")</pubDate>
-      <sparkle:version>$build</sparkle:version>
-      <sparkle:shortVersionString>$version</sparkle:shortVersionString>
-      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <enclosure url="$url" type="application/octet-stream" $sig />
-    </item>
-  </channel>
-</rss>
-XML
 
 # Unversioned copy so releases/latest/download/Poindexter.dmg (the GitHub Pages download
 # button) always resolves to the newest release.
