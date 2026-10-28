@@ -5,4 +5,4 @@ need swiftlint
 cd "$MACOS_DIR"
 swiftlint lint --strict --quiet
 swift test "${SWIFT_FLAGS[@]}"
-"${0:A:h}/build.sh"
+"$MACOS_DIR/scripts/build.sh"
