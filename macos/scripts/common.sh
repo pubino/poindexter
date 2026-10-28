@@ -48,3 +48,30 @@ generate_project() {
   need xcodegen
   (cd "$MACOS_DIR" && xcodegen generate --quiet)
 }
+
+# Writes a one-item Sparkle appcast. The notes are embedded as plain text, so Sparkle shows
+# them as text instead of loading a release page in a web view.
+# Usage: write_appcast OUT VERSION BUILD ZIP_URL "SIGNATURE_ATTRS" NOTES_FILE
+write_appcast() {
+  local out=$1 version=$2 build=$3 url=$4 sig=$5 notes=$6 text
+  text=$(<"$notes")
+  [[ "$text" != *']]>'* ]] || die "$notes must not contain ']]>'"
+  cat > "$out" <<XML
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>Poindexter</title>
+    <link>https://github.com/${GITHUB_REPO:?}</link>
+    <item>
+      <title>Version $version</title>
+      <description sparkle:descriptionFormat="plain-text"><![CDATA[$text]]></description>
+      <pubDate>$(LC_ALL=C date -u "+%a, %d %b %Y %H:%M:%S +0000")</pubDate>
+      <sparkle:version>$build</sparkle:version>
+      <sparkle:shortVersionString>$version</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <enclosure url="$url" type="application/octet-stream" $sig />
+    </item>
+  </channel>
+</rss>
+XML
+}

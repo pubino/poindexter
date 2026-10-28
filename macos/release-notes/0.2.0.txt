@@ -1,0 +1,7 @@
+What's new in Poindexter 0.2.0
+
+- Poindexter now asks on first launch whether to check for updates automatically.
+- New Updates tab in Settings: turn automatic checks on or off, choose daily, weekly or
+  monthly checks, choose whether to download and install updates automatically, and
+  check now.
+- Update notes like these now appear as plain text.

@@ -9,6 +9,9 @@ version="${1:?usage: release.sh VERSION [--dry-run]}"
 dry_run=false
 [[ "${2:-}" == "--dry-run" ]] && dry_run=true
 build=$(build_number "$version")
+# User-facing notes, shown as plain text in Sparkle's update window and on the GitHub release.
+notes="$MACOS_DIR/release-notes/$version.txt"
+[[ -s "$notes" ]] || die "write the release notes first: $notes"
 tag="v$version"
 out="$BUILD_DIR/release"
 need gh
@@ -31,7 +34,7 @@ sig=$("$BUILD_DIR/SourcePackages/artifacts/sparkle/Sparkle/bin/sign_update" \
   --account "${SPARKLE_KEY_ACCOUNT:-ed25519}" "$zip")
 [[ "$sig" == *edSignature=* ]] || die "sign_update failed (is the Sparkle private key in your keychain?)"
 url="https://github.com/$GITHUB_REPO/releases/download/$tag/Poindexter-$version.zip"
-cat > "$out/appcast.xml" <<XML
+write_appcast "$out/appcast.xml" "$version" "$build" "$url" "$sig" "$notes"
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
   <channel>
@@ -61,6 +64,6 @@ if $dry_run; then
 fi
 git tag -a "$tag" -m "Poindexter $version"
 git push origin "$tag"
-gh release create "$tag" -R "$GITHUB_REPO" --title "Poindexter $version" --generate-notes \
+gh release create "$tag" -R "$GITHUB_REPO" --title "Poindexter $version" --notes-file "$notes" \
   "$out/Poindexter-$version.dmg" "$out/Poindexter.dmg" "$zip" "$out/appcast.xml"
 print "Published: https://github.com/$GITHUB_REPO/releases/tag/$tag"
