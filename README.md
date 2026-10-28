@@ -98,10 +98,10 @@ Releases are built, signed and notarized locally. One-time setup:
    ```zsh
    # Option A: App Store Connect API key (Users and Access → Integrations → Team Keys,
    # role "Developer"). Works well alongside Xcode Cloud.
-   xcrun notarytool store-credentials developer-id-notary \
+   xcrun notarytool store-credentials notary \
      --key ~/path/AuthKey_XXXXXXXXXX.p8 --key-id XXXXXXXXXX --issuer <issuer-uuid>
    # Option B: Apple ID with an app-specific password from account.apple.com
-   xcrun notarytool store-credentials developer-id-notary \
+   xcrun notarytool store-credentials notary \
      --apple-id you@example.com --team-id W7EJE9LZ23
    ```
 3. **Sparkle signing key.** Run `macos/scripts/sparkle-keys.sh`. It prints the public key;
