@@ -1,0 +1,8 @@
+services:
+  test:
+    build: { context: ., target: test }
+  convert:
+    build: { context: ., target: runtime }
+    image: pdf2pptx:latest
+    # Put PDFs in ./work, then: docker-compose run --rm convert talk.pdf
+    volumes: ["./work:/work"]

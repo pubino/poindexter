@@ -1,0 +1,28 @@
+.venv/
+__pycache__/
+*.pyc
+.env*
+!example.env
+node_modules/
+*.db
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+# Swift / Xcode
+macos/.build/
+macos/build/
+macos/Poindexter.xcodeproj/
+macos/App/Assets.xcassets/AppIcon.appiconset/*.png
+*.xcarchive
+.swiftpm/
+xcuserdata/
+DerivedData/
+work/
+CLAUDE.md
+.claude/
+# converted outputs / inputs dropped in the repo by accident
+*.pptx
+*.pdf
