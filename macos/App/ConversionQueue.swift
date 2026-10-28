@@ -2,7 +2,7 @@ import Foundation
 import Observation
 import PoindexterCore
 
-enum Settings {
+enum Preferences {
     static let dpi = "dpi"
     static let jpeg = "jpeg"
     static let collapseOverlays = "collapseOverlays"
@@ -64,7 +64,7 @@ final class ConversionQueue {
         running = true
         let id = jobs[index].id
         let source = jobs[index].source
-        let options = Settings.options
+        let options = Preferences.options
         jobs[index].state = .converting(done: 0, total: 0)
 
         Task.detached(priority: .userInitiated) {

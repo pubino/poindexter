@@ -27,10 +27,11 @@ struct PoindexterApp: App {
 }
 
 /// Receives PDFs dropped on the Dock icon or opened via Finder's "Open With".
+@MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
-    @MainActor let queue = ConversionQueue()
+    let queue = ConversionQueue()
 
-    @MainActor func application(_ application: NSApplication, open urls: [URL]) {
+    func application(_ application: NSApplication, open urls: [URL]) {
         queue.add(urls)
     }
 
@@ -52,6 +53,7 @@ struct CheckForUpdatesView: View {
     }
 }
 
+@MainActor
 final class UpdaterModel: ObservableObject {
     @Published var canCheckForUpdates = false
 

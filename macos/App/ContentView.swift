@@ -107,10 +107,10 @@ struct JobRow: View {
 }
 
 struct SettingsView: View {
-    @AppStorage(Settings.collapseOverlays) private var collapseOverlays = false
-    @AppStorage(Settings.jpeg) private var jpeg = false
-    @AppStorage(Settings.notes) private var notes = true
-    @AppStorage(Settings.dpi) private var dpi = 220
+    @AppStorage(Preferences.collapseOverlays) private var collapseOverlays = false
+    @AppStorage(Preferences.jpeg) private var jpeg = false
+    @AppStorage(Preferences.notes) private var notes = true
+    @AppStorage(Preferences.dpi) private var dpi = 220
 
     var body: some View {
         Form {
