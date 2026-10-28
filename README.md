@@ -105,7 +105,7 @@ Releases are built, signed and notarized locally. One-time setup:
    ```
 3. **Sparkle signing key.** Run `macos/scripts/sparkle-keys.sh`. It prints the public key;
    put that in `.env`. The private key stays in your keychain. Back it up with
-   `generate_keys -x`: if it's lost, existing installs can't verify future updates.
+   `generate_keys --account poindexter -x`: if it's lost, existing installs can't verify future updates.
 4. `cp example.env .env` and fill it in.
 
 Then, from a clean, pushed `main`:
