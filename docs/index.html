@@ -22,6 +22,8 @@
   .about p { color: var(--fg); margin: 0 0 .75rem; }
   .about ul { margin: 0; padding-left: 1.25rem; }
   .about li { margin: .2rem 0; }
+  .about a { color: var(--accent); }
+  code { font: 14px ui-monospace, SFMono-Regular, Menlo, monospace; }
   small a { color: inherit; }
 </style>
 </head>
@@ -47,10 +49,22 @@
       <li>Each page's text is copied into the speaker notes and image alt text, so it can be
         searched and read by screen readers.</li>
     </ul>
-    <p>If you need editable slides, rebuild the deck in PowerPoint from your source.</p>
 
-    <h2>Private by design</h2>
-    <p>Everything runs on your Mac. Your PDFs are never uploaded.</p>
+    <h2>Still have the LaTeX source? Use that instead</h2>
+    <p>Poindexter is for when all you have is the PDF. If you have the <code>.tex</code> files and
+      want slides you can edit, convert from the source:</p>
+    <ul>
+      <li><a href="https://pandoc.org">Pandoc</a> turns LaTeX into a <code>.pptx</code> with
+        editable text and native PowerPoint equations
+        (<code>pandoc talk.tex -o talk.pptx</code>). It doesn't understand beamer frames, so
+        expect to split slides and redo layouts. TikZ figures need reworking. It works best if
+        you first restructure the talk as Markdown with one heading per slide.</li>
+      <li>Rebuild the deck in PowerPoint and type equations as LaTeX in its equation editor
+        (Insert → Equation, then choose LaTeX).</li>
+      <li>The <a href="https://github.com/Jonathan-LeRoux/IguanaTex">IguanaTex</a> add-in for
+        PowerPoint renders LaTeX equations and TikZ figures on slides and keeps their source,
+        so you can edit them later.</li>
+    </ul>
   </section>
 </main>
 </body>
