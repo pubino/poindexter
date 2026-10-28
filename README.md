@@ -77,6 +77,10 @@ macos/scripts/run.sh          # build and launch the app (Debug, ad-hoc signed)
 ./scripts/teardown.sh         # remove venvs, build products and generated files
 ```
 
+CI runs on Linux runners only (Python, Docker, swiftlint). The Swift tests and app build
+need macOS, so run `macos/scripts/test.sh` before pushing app changes. `release.sh` runs
+it automatically and won't sign anything if it fails.
+
 The Xcode project is generated from `macos/project.yml` by
 [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`). Don't edit
 `Poindexter.xcodeproj` directly. The app icon is drawn by code in

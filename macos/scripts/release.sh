@@ -22,6 +22,8 @@ if ! $dry_run; then
   ! git rev-parse -q --verify "refs/tags/$tag" >/dev/null || die "tag $tag already exists"
 fi
 
+# CI runs on Linux only, so the Swift tests and app build are gated here instead.
+"${0:A:h}/test.sh"
 "${0:A:h}/notarize.sh" "$version"
 
 zip="$out/Poindexter-$version.zip"

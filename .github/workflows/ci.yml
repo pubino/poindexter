@@ -3,12 +3,12 @@ on:
   push:
   pull_request:
 
+# Linux runners only: macOS runners are slow. Swift tests and the app build need
+# macOS frameworks (PDFKit, AppKit), so they run locally via macos/scripts/test.sh,
+# which macos/scripts/release.sh runs before anything is signed or published.
 jobs:
   python:
-    strategy:
-      matrix:
-        os: [macos-15, ubuntu-24.04]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
@@ -27,15 +27,13 @@ jobs:
       - run: docker compose build test convert
       - run: docker compose run --rm test
 
-  macos-app:
-    runs-on: macos-15
+  swiftlint:
+    runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/realm/swiftlint:0.65.1@sha256:f47e083201e47a136cda5ae847595bfe00226c444ca226fa74fa5dc648a9b057
     defaults:
       run:
         working-directory: macos
     steps:
       - uses: actions/checkout@v4
-      - run: brew install swiftlint xcodegen
       - run: swiftlint lint --strict
-      - run: swift test --disable-index-store
-      # Compiles the full app (ad-hoc signed). Release signing/notarization is done locally.
-      - run: ./scripts/build.sh
