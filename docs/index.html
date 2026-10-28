@@ -17,17 +17,41 @@
               color: #fff; font-weight: 600; text-decoration: none; }
   .download:hover { filter: brightness(1.1); }
   small { display: block; margin-top: 1.25rem; color: var(--muted); }
+  .about { margin-top: 3rem; text-align: left; font-size: 15px; }
+  .about h2 { font-size: 1rem; margin: 1.5rem 0 .25rem; }
+  .about p { color: var(--fg); margin: 0 0 .75rem; }
+  .about ul { margin: 0; padding-left: 1.25rem; }
+  .about li { margin: .2rem 0; }
   small a { color: inherit; }
 </style>
 </head>
 <body>
 <main>
   <h1>Poindexter</h1>
-  <p>Convert beamer PDFs to PowerPoint.</p>
+  <p>Turn a PDF presentation into a PowerPoint file of slide images.</p>
   <a class="download" href="https://github.com/pubino/poindexter/releases/latest/download/Poindexter.dmg">Download for macOS</a>
   <small>Latest release · macOS 14 or later ·
     <a href="https://github.com/pubino/poindexter/releases">All releases</a> ·
     <a href="https://github.com/pubino/poindexter">Source</a></small>
+
+  <section class="about">
+    <p>Poindexter is for quickly repackaging a finished PDF talk (LaTeX beamer or anything else)
+      so it can be shown from PowerPoint or Keynote. Each page is rendered as a high-resolution
+      image and placed on its own slide, so it looks exactly like the PDF.</p>
+
+    <h2>It is not a full-fidelity conversion</h2>
+    <ul>
+      <li>Slides are pictures. Text, equations and figures can't be edited in PowerPoint.</li>
+      <li>Links aren't clickable, and embedded video, audio and animations don't carry over.</li>
+      <li>Beamer overlays become separate slides, or one slide per frame if you choose.</li>
+      <li>Each page's text is copied into the speaker notes and image alt text, so it can be
+        searched and read by screen readers.</li>
+    </ul>
+    <p>If you need editable slides, rebuild the deck in PowerPoint from your source.</p>
+
+    <h2>Private by design</h2>
+    <p>Everything runs on your Mac. Your PDFs are never uploaded.</p>
+  </section>
 </main>
 </body>
 </html>
